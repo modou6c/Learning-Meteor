@@ -2,3 +2,8 @@
 .hidden_div{
 	display:none;
 }
+
+.form-control {
+	width: 50%;
+}
+
