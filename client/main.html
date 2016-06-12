@@ -123,3 +123,50 @@
   </div>
 </template>
 
+
+<!-- comment -->
+<template name="comment">
+  <div class="row">
+    <div class="col-xs-12">
+      <h5>{{author createdBy}}<small>  commented on {{createdOn}}</small></h5>
+      <p>{{text}}</p>
+    </div>
+  </div>
+</template>
+
+<!-- comment_form -->
+<template name="comment_form">
+    <div class="row comment-row" >
+      <div class="col-xs-12">
+        <a class="btn btn-default js-toggle-comment-form" href="#">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Comment
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 hidden_div" id="comment_form">
+        <div class="panel">
+          <div class="panel-body">
+            <form class="js-save-comment-form" >
+              <div class="form-group">
+                <label for="text">What do you think about {{website.title}}?</label>
+                <textarea class="form-control" id="text" placeholder="Your opinion"></textarea>
+                <input type="hidden" id="websiteId" value="{{website._id}}" />
+              </div>
+
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+    </div>
+</template>
+
+<!-- search -->
+<template name="search_form">
+  <form class="form-horizontal" role="search">
+     <div class="form-group">
+       <input type="text" class="form-control searchfield" placeholder="Search">
+     </div>
+  </form>
+</template>

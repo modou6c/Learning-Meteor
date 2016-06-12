@@ -4,6 +4,36 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
 
 
+/// routing 
+Router.configure({
+  layoutTemplate: 'ApplicationLayout'
+});
+
+
+Router.route('/', function () {
+  this.render('navbar', {
+    to:"navbar"
+  });
+  this.render('websites', {
+    to:"main"
+  });
+});
+
+Router.route('/site/:_id', function () {
+  this.render('navbar', {
+    to:"navbar"
+  });
+  this.render('website_info', {
+    to:"main", 
+    data:function(){
+      return {
+      	website: Websites.findOne({_id:this.params._id}),
+      	comments: Comments.find({websiteId: this.params._id})
+      };
+    }
+  });
+});
+
 // accounts helpers
  Accounts.ui.config({
     passwordSignupFields: "USERNAME_AND_EMAIL"
@@ -125,3 +155,43 @@ import './main.html';
 		}
 	});
 
+// search
+	Template.search_form.events({
+		"input .searchfield": function(event) {
+			Session.set("searchInput" , event.target.value);
+		}
+	})
+
+	//comment form
+  Template.comment_form.events({
+		"click .js-toggle-comment-form": function(event, template) {
+			$("#comment_form").toggle('slow');
+		},
+		"submit .js-save-comment-form": function(event, template){
+       var text = event.target.text.value;
+			 var websiteId = event.target.websiteId.value;
+			  console.log("websiteId" + websiteId);
+					 if(Meteor.user()) {
+						 Comments.insert({
+							 	websiteId: websiteId,
+		           				createdBy: Meteor.user()._id,
+							 	createdOn: new Date(),
+							 	text: text
+						 });
+					 }
+					$("#comment_form").hide('slow');
+					return false;// stop the form submit from reloading the page
+		}
+	});
+ // comment
+  Template.comment.helpers( {
+		author: function(userId) {
+			var user = Meteor.users.findOne({ _id: userId});
+			if(user) {
+				return user.username;
+			} else {
+				return "anonymous";
+			}
+
+		}
+	})
